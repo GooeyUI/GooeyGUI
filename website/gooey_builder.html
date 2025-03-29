@@ -15,7 +15,6 @@
             overflow: hidden;
         }
 
-        /* Windows 10 style window */
         .window {
             width: 800px;
             height: 600px;
@@ -136,6 +135,11 @@
             padding: 10px;
         }
 
+        #code-panel
+    {
+        min-width: 400px;
+    }
+
         .widget {
             background: #0078d7;
             color: white;
@@ -147,6 +151,7 @@
             border: none;
             font-size: 12px;
             transition: background 0.1s;
+
         }
 
         .widget:hover {
@@ -160,8 +165,8 @@
         .draggable {
             user-select: none;
             padding: 6px;
-            min-width: 80px;
-            min-height: 1px;
+            width: 100px;
+            height: 30px;
             box-sizing: border-box;
         }
 
@@ -255,13 +260,27 @@
             min-height: 100px;
         }
 
+        .widget-dropsurface {
+            border: 1px solid #d0d0d0;
+            min-height: 150px;
+            min-width: 150px;
+            height: 150px;
+            width: 150px;
+            background-image: url("builder_assets/file.png");
+            background-size: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+            text-align: center;
+        }
+
         .widget-checkbox {
             width: 16px;
             height: 16px;
-            border: 1px solid #d0d0d0;
+            border: 2px solid black;
             background: white;
             position: relative;
             border-radius: 2px;
+            text-align: center;
         }
 
         .widget-checkbox.checked::after {
@@ -382,11 +401,17 @@
             color: #666;
         }
     </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
 </head>
 
 <body>
 
-   
+
     <div class="window">
         <div class="title-bar">
             <div class="title-text">Hello World</div>
@@ -402,6 +427,16 @@
         <div class="status-bar">
             <span id="status-text">Ready</span>
         </div>
+    </div>
+
+    <div class="panel" id="code-panel">
+        <div class="panel-header">Code editor</div>
+        <textarea id="editor">#include &lt;stdio.h&gt;
+
+            int main() {
+                printf("Hello, C!");
+                return 0;
+            }</textarea>
     </div>
 
     <!-- Floating Toolbox Panel -->
@@ -426,7 +461,8 @@
             <div class="widget" data-type="List">List</div>
             <div class="widget" data-type="Plot">Plot</div>
             <div class="widget" data-type="RadioButtonGroup">RadioButtonGroup</div>
-            <div class="widget" data-type="DropSurface">File Drop Surface</div>
+            <div class="widget" data-type="DropSurface" data-dropsurface_message="Drop files here..">File Drop Surface
+            </div>
 
             <h4 style="color: #333; font-size: 14px;">Debug & Dev</h4>
             <div class="widget" data-type="Overlay">Overlay</div>
@@ -513,7 +549,7 @@
                 </div>
 
 
-                <!-- Slider Specific Items -->
+                <!-- Image Specific Items -->
                 <div id="image-properties">
                     <h4 style="color: #333; font-size: 14px;">Image Properties</h4>
 
@@ -523,7 +559,15 @@
                     </div>
                 </div>
 
+                <!-- File DropSurface Specific Items -->
+                <div id="dropsurface-properties">
+                    <h4 style="color: #333; font-size: 14px;">DropSurface Properties</h4>
 
+                    <div class="property-item">
+                        <label>Message:</label>
+                        <input type="text" id="dropsurface-message" placeholder="Drop files here..">
+                    </div>
+                </div>
 
                 <button onclick="applyWidgetProperties()">Apply</button>
                 <button onclick="deleteSelectedWidget()" style="background: #e81123; color: white;">Delete</button>
@@ -532,6 +576,30 @@
     </div>
 
     <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            mode: "text/x-csrc",
+            lineNumbers: true,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete" // Trigger autocomplete
+            }
+        });
+
+        // Custom C keywords for autocomplete
+        CodeMirror.registerHelper("hint", "c", (cm) => {
+            const cur = cm.getCursor();
+            const token = cm.getTokenAt(cur);
+            const keywords = [
+                "int", "float", "char", "if", "else", "while", "for", "return",
+                "printf", "scanf", "#include", "#define", "struct", "typedef"
+            ];
+            const list = keywords.filter((word) => word.startsWith(token.string));
+            return {
+                list: list.length ? list : keywords,
+                from: CodeMirror.Pos(cur.line, token.start),
+                to: CodeMirror.Pos(cur.line, token.end)
+            };
+        });
+
         let selectedWidget = null;
         let draggedWidget = null;
         let dragOffsetX = 0;
@@ -629,6 +697,10 @@
                     newWidget.textContent = "Image";
                     break;
 
+                case "DropSurface":
+                    newWidget.classList.add("widget-dropsurface");
+
+                    break;
                 case "VerticalLayout":
                     newWidget.classList.add("layout", "vertical");
                     const placeholder = document.createElement("div");
@@ -660,7 +732,7 @@
             if (!parent) {
                 newWidget.style.left = x + "px";
                 newWidget.style.top = y + "px";
-                newWidget.style.width = "100px";
+                //  newWidget.style.width = "100px";
 
                 switch (type) {
                     case "Label":
@@ -670,7 +742,7 @@
                         newWidget.style.height = "2px";
                         break;
                     default:
-                        newWidget.style.height = "30px";
+                        // newWidget.style.height = "30px";
 
                         break;
                 }
@@ -702,6 +774,7 @@
                 document.addEventListener("mouseup", onResizeEnd);
             });
         }
+
 
         function onResizeMove(e) {
             if (!resizingWidget) return;
@@ -847,10 +920,13 @@
             // Select new widget
             selectedWidget = widget;
             widget.classList.add("selected");
+            document.getElementById("prop-text").disabled = false;
+
             // Show properties panel
             document.getElementById("widget-properties").classList.add("active");
             document.getElementById("slider-properties").style.display = "none";
             document.getElementById("image-properties").style.display = "none";
+            document.getElementById("dropsurface-properties").style.display = "none";
 
             if (widget.classList.contains("widget-slider"))
                 document.getElementById("slider-properties").style.display = "block";
@@ -861,7 +937,11 @@
 
             }
 
+            if (widget.classList.contains("widget-dropsurface")) {
+                document.getElementById("prop-text").disabled = true;
+                document.getElementById("dropsurface-properties").style.display = "block";
 
+            }
 
 
             updatePropertiesPanel();
@@ -907,6 +987,13 @@
             }
 
 
+            if (selectedWidget.dataset.type === "DropSurface") {
+                document.getElementById("dropsurface-message").value = selectedWidget.dataset.dropsurface_message || "Drop files here..";
+                selectedWidget.textContent = document.getElementById("dropsurface-message").value;
+
+            }
+
+
         }
 
         function applyWidgetProperties() {
@@ -936,10 +1023,14 @@
             if (selectedWidget.dataset.type === "Image") {
                 selectedWidget.dataset.relative_path = document.getElementById("image-relative-path").value;
                 let split_path = selectedWidget.dataset.relative_path.split("/");
-                selectedWidget.textContent = split_path[split_path.length-1];
+                selectedWidget.textContent = split_path[split_path.length - 1];
             }
 
+            if (selectedWidget.dataset.type === "DropSurface") {
 
+                selectedWidget.dataset.dropsurface_message = document.getElementById("dropsurface-message").value;
+                selectedWidget.textContent = selectedWidget.dataset.dropsurface_message;
+            }
 
             document.getElementById("status-text").textContent = "Properties updated";
             setTimeout(() => {
@@ -1050,6 +1141,11 @@
                     case "Image":
                         let image_relative_path = widget.dataset.relative_path;
                         widgetCode = `${indent}GooeyImage *${widgetVar} = GooeyImage_Create("${image_relative_path}", ${x}, ${y}, ${width}, ${height}, NULL);\n`;
+
+                        break;
+                    case "DropSurface":
+                        let dropsurface_message = widget.dataset.dropsurface_message || "Drop files here..";
+                        widgetCode = `${indent}GooeyDropSurface *${widgetVar} = GooeyDropSurface_Create(${x}, ${y}, ${width}, ${height}, "${dropsurface_message}", NULL);\n`;
 
                         break;
                     case "VerticalLayout":
