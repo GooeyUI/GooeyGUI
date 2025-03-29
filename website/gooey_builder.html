@@ -246,6 +246,15 @@
             background-color: #d0d0d0;
         }
 
+        .widget-image {
+            background-image: url("builder_assets/image_placeholder.jpg");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-width: 100px;
+            min-height: 100px;
+        }
+
         .widget-checkbox {
             width: 16px;
             height: 16px;
@@ -416,7 +425,7 @@
             <div class="widget" data-type="Checkbox">Checkbox</div>
             <div class="widget" data-type="Label">Label</div>
             <div class="widget" data-type="Dropdown">Dropdown</div>
-            <div class="widget" data-type="Image">Image</div>
+            <div class="widget" data-type="Image" data-relative_path="./assets/example.png">Image</div>
             <div class="widget" data-type="Tabs">Tabview</div>
             <div class="widget" data-type="List">List</div>
             <div class="widget" data-type="Plot">Plot</div>
@@ -504,6 +513,17 @@
                             <option value="true">enabled</option>
                             <option value="false">disabled</option>
                         </select>
+                    </div>
+                </div>
+
+
+                <!-- Slider Specific Items -->
+                <div id="image-properties">
+                    <h4 style="color: #333; font-size: 14px;">Image Properties</h4>
+
+                    <div class="property-item">
+                        <label>Image relative path:</label>
+                        <input type="text" id="image-relative-path" placeholder="./assets/example.png">
                     </div>
                 </div>
 
@@ -607,6 +627,12 @@
                     newWidget.textContent = "Canvas";
 
                     break;
+
+                case "Image":
+                    newWidget.classList.add("widget-image");
+                    newWidget.textContent = "Image";
+                    break;
+
                 case "VerticalLayout":
                     newWidget.classList.add("layout", "vertical");
                     const placeholder = document.createElement("div");
@@ -828,8 +854,19 @@
             // Show properties panel
             document.getElementById("widget-properties").classList.add("active");
             document.getElementById("slider-properties").style.display = "none";
+            document.getElementById("image-properties").style.display = "none";
 
-            if (widget.classList.contains("widget-slider")) document.getElementById("slider-properties").style.display = "block";
+            if (widget.classList.contains("widget-slider"))
+                document.getElementById("slider-properties").style.display = "block";
+
+            if (widget.classList.contains("widget-image")) {
+                document.getElementById("prop-text").disabled = true;
+                document.getElementById("image-properties").style.display = "block";
+
+            }
+
+
+
 
             updatePropertiesPanel();
 
@@ -858,6 +895,7 @@
             document.getElementById("prop-height").value = parseInt(selectedWidget.style.height) || rect.height;
             document.getElementById("prop-text").value = selectedWidget.textContent || "";
 
+            // Slider
             if (selectedWidget.dataset.type === "Slider") {
                 document.getElementById("slider-min-value").value =
                     selectedWidget.dataset.min_value ? parseInt(selectedWidget.dataset.min_value) : 0;
@@ -866,6 +904,12 @@
                 document.getElementById("slider-show-hints").value =
                     selectedWidget.dataset.show_hints || "false";
             }
+
+            // Image
+            if (selectedWidget.dataset.type === "Image") {
+                document.getElementById("image-relative-path").value = selectedWidget.dataset.relative_path || "./assets/example.png";
+            }
+
 
         }
 
@@ -883,10 +927,20 @@
             if (selectedWidget.dataset.type !== "Slider") {
                 selectedWidget.textContent = document.getElementById("prop-text").value;
             }
+
+            // Slider
             if (selectedWidget.dataset.type === "Slider") {
                 selectedWidget.dataset.min_value = document.getElementById("slider-min-value").value;
                 selectedWidget.dataset.max_value = document.getElementById("slider-max-value").value;
                 selectedWidget.dataset.show_hints = document.getElementById("slider-show-hints").value;
+            }
+
+
+            // Image
+            if (selectedWidget.dataset.type === "Image") {
+                selectedWidget.dataset.relative_path = document.getElementById("image-relative-path").value;
+                let split_path = selectedWidget.dataset.relative_path.split("/");
+                selectedWidget.textContent = split_path[split_path.length-1];
             }
 
 
@@ -995,6 +1049,11 @@
                         break;
                     case "Canvas":
                         widgetCode = `${indent}GooeyCanvas *${widgetVar} = GooeyCanvas_Create(${x}, ${y}, ${width}, ${height});\n`;
+
+                        break;
+                    case "Image":
+                        let image_relative_path = widget.dataset.relative_path;
+                        widgetCode = `${indent}GooeyImage *${widgetVar} = GooeyImage_Create("${image_relative_path}", ${x}, ${y}, ${width}, ${height}, NULL);\n`;
 
                         break;
                     case "VerticalLayout":
