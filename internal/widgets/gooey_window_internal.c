@@ -58,7 +58,7 @@ void GooeyWindow_Internal_RegisterWidget(GooeyWindow *win, void *widget)
     }
     case WIDGET_LAYOUT:
     {
-        win->layouts[win->label_count++] = (GooeyLayout *)widget;
+        win->layouts[win->layout_count++] = (GooeyLayout *)widget;
         break;
     }
     case WIDGET_PLOT:

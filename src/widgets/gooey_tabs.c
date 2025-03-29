@@ -50,7 +50,7 @@ void GooeyTabs_InsertTab(GooeyTabs *tab_widget, char *tab_name)
     if (!tab_widget)
     {
         LOG_ERROR("Couldn't insert tab, tab widget is invalid.");
-        return NULL;
+        return;
     }
 
     size_t tab_id = tab_widget->tab_count;

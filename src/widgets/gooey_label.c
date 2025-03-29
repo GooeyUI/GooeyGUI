@@ -21,23 +21,23 @@
 
 GooeyLabel *GooeyLabel_Create(const char *text, float font_size, int x, int y)
 {
-    GooeyLabel *label = (GooeyLabel*) malloc(sizeof(GooeyLabel));
-    if(!label)
+    GooeyLabel *label = (GooeyLabel *)malloc(sizeof(GooeyLabel));
+    if (!label)
     {
         LOG_ERROR("Couldn't allocate memory for label.");
         return NULL;
     }
 
-    *label = (GooeyLabel) {0};
+    *label = (GooeyLabel){0};
 
     label->core.type = WIDGET_LABEL;
     label->core.x = x;
     label->core.y = y;
-    label->font_size = font_size;
-    label->color = -1; // DEFAULTS TO NEUTRAL
     label->core.is_visible = true;
-    strcpy(label->text, text);
-    
+
+    label->font_size = font_size;
+    strncpy(label->text, text, sizeof(label->text) - 1);
+    label->text[sizeof(label->text) - 1] = '\0';
     LOG_INFO("Label added with dimensions x=%d, y=%d", x, y);
 
     return label;
@@ -47,7 +47,6 @@ void GooeyLabel_SetColor(GooeyLabel *label, const char *color)
 {
     unsigned long color_long = (unsigned long)strtol(color, NULL, 0);
     label->color = color_long;
-
 }
 
 void GooeyLabel_SetText(GooeyLabel *label, const char *text)
@@ -55,4 +54,3 @@ void GooeyLabel_SetText(GooeyLabel *label, const char *text)
     if (label)
         strcpy(label->text, text);
 }
-

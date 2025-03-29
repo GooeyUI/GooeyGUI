@@ -386,11 +386,7 @@
 
 <body>
 
-    <div class="disclaimer"
-        style="position: absolute; top: 0; width: 100%; height: 60px; color: white; text-align: center; background-color:#005a9e;">
-        <h4> GooeyBuilder is still in early-development. If something doesn't work create an issue.</h4>
-
-    </div>
+   
     <div class="window">
         <div class="title-bar">
             <div class="title-text">Hello World</div>
@@ -1037,7 +1033,7 @@
                     case "Slider":
                         let slider_min_value = widget.getAttribute("data-min_value") ? parseInt(widget.getAttribute("data-min_value")) : 0;
                         let slider_max_value = widget.getAttribute("data-max_value") ? parseInt(widget.getAttribute("data-max_value")) : 100;
-                        let show_hints = widget.getAttribute("data-show_hints");
+                        let show_hints = widget.getAttribute("data-show_hints") || "false";
 
                         widgetCode = `${indent}GooeySlider *${widgetVar} = GooeySlider_Create(${x}, ${y}, ${width}, ${slider_min_value}, ${slider_max_value}, ${show_hints}, slider_callback);\n`;
                         break;

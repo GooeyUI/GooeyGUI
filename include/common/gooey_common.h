@@ -13,6 +13,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
+#include <math.h>
 
 #include "theme/gooey_theme.h"
 

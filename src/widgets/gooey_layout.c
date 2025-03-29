@@ -68,8 +68,9 @@
      }
  
      GooeyWidget* widget_core = (GooeyWidget*) widget;
+     LOG_CRITICAL("%d", widget_core->width);
 
-     if (widget_core->type < WIDGET_BUTTON || widget_core->type > WIDGET_LAYOUT) {
+     if (widget_core->type < WIDGET_LABEL || widget_core->type > WIDGET_TABS) {
          LOG_ERROR("Invalid widget type: %d", widget_core->type);
          return;
      }

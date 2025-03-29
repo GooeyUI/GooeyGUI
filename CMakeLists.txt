@@ -22,7 +22,6 @@ set(SOURCES
     src/widgets/gooey_layout.c
     src/widgets/gooey_list.c
     src/widgets/gooey_menu.c
-    src/widgets/gooey_messagebox.c
     src/widgets/gooey_radiobutton.c
     src/widgets/gooey_slider.c
     src/widgets/gooey_textbox.c
@@ -89,7 +88,6 @@ set(HEADERS
     include/widgets/gooey_layout.h
     include/widgets/gooey_list.h
     include/widgets/gooey_menu.h
-    include/widgets/gooey_messagebox.h
     include/widgets/gooey_radiobutton.h
     include/widgets/gooey_slider.h
     include/widgets/gooey_textbox.h
