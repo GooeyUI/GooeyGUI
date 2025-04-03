@@ -1,5 +1,6 @@
 #include "gooey_textbox_internal.h"
 #include "backends/gooey_backend_internal.h"
+#include <ctype.h>
 
 void GooeyTextbox_Draw(GooeyWindow *win)
 {

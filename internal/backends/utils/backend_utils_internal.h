@@ -21,7 +21,7 @@
 #include "backends/utils/glad/glad.h"
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
-#include <GLPS/glps_window_manager.h>
+#include "glps_window_manager.h"
 #include "backends/utils/linmath/linmath.h"
 #include <stdio.h>
 #include <stdlib.h>

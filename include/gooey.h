@@ -39,7 +39,7 @@
 #include "signals/gooey_signals.h"
 
 // Threads
-#include <GLPS/glps_thread.h>
+#include "glps_thread.h"
 
 /**
  * @brief Initializes the Gooey system with the specified backend.
