@@ -237,6 +237,7 @@ typedef struct
     int num_options;                      /**< Number of options in the dropdown */
     bool is_open;                         /**< Whether the dropdown menu is open */
     void (*callback)(int selected_index); /**< Callback function when an option is selected */
+    int element_hovered_over;
 } GooeyDropdown;
 
 /**
@@ -249,6 +250,7 @@ typedef struct
     void (*callbacks[MAX_MENU_CHILDREN])(); /**< List of callback functions for child menu elements */
     int menu_elements_count;                /**< Number of child menu elements */
     bool is_open;                           /**< Whether the menu is open or not */
+    int element_hovered_over;
 } GooeyMenuChild;
 
 /**

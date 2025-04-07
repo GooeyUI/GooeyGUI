@@ -43,6 +43,7 @@ GooeyDropdown *GooeyDropdown_Create(int x, int y, int width,
     dropdown->options = options;
     dropdown->num_options = num_options;
     dropdown->selected_index = 0;
+    dropdown->element_hovered_over = -1;
     dropdown->callback = callback;
 
     LOG_INFO("Dropdown added with dimensions x=%d, y=%d, w=%d, h=%d", x, y, width, height);

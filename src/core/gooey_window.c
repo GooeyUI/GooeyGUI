@@ -548,6 +548,8 @@ void GooeyWindow_Redraw(size_t window_id, void *data)
     needs_redraw |= GooeySlider_HandleDrag(window, event);
     needs_redraw |= GooeyList_HandleThumbScroll(window, event);
     needs_redraw |= GooeyButton_HandleHover(window, event->mouse_move.x, event->mouse_move.y);
+    needs_redraw |= GooeyMenu_HandleHover(window);
+    needs_redraw |= GooeyDropdown_HandleHover(window, event->mouse_move.x, event->mouse_move.y);
 
     switch (event->type)
     {

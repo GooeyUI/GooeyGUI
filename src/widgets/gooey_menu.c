@@ -42,6 +42,7 @@ GooeyMenuChild *GooeyMenu_AddChild(GooeyWindow *win, char *title)
     strcpy(child->title, title);
     child->menu_elements_count = 0;
     child->is_open = false;
+    child->element_hovered_over = -1;
     LOG_INFO("Child added to menu with title=\"%s\"", title);
 
     return child;

@@ -24,7 +24,7 @@
  * @return `true` if the menu item was clicked, otherwise `false`.
  */
 bool GooeyMenu_HandleClick(GooeyWindow *win, int x, int y);
-
+bool GooeyMenu_HandleHover(GooeyWindow *win);
 /**
  * @brief Draws the menu and its items on the window.
  *

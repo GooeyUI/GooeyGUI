@@ -26,7 +26,8 @@
   * @return True if the dropdown menu was clicked, false otherwise.
   */
  bool GooeyDropdown_HandleClick(GooeyWindow *win, int x, int y);
- 
+ bool GooeyDropdown_HandleHover(GooeyWindow *win, int x, int y);
+
  /**
   * @brief Draws all dropdown menus within the specified window.
   *

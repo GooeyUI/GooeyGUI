@@ -10,7 +10,6 @@
 
 static void draw_plot_background(GooeyPlot *plot, GooeyWindow *win)
 {
-    
 
     active_backend->FillRectangle(
         plot->core.x,
@@ -23,7 +22,6 @@ static void draw_plot_background(GooeyPlot *plot, GooeyWindow *win)
 
 static void draw_axes(GooeyPlot *plot, GooeyWindow *win)
 {
-    
 
     // Draw the X axis
     active_backend->DrawLine(
@@ -46,7 +44,9 @@ static void draw_axes(GooeyPlot *plot, GooeyWindow *win)
 
 static void draw_plot_title(GooeyPlot *plot, GooeyWindow *win)
 {
-    
+
+    if (!plot->data->title)
+        return;
 
     active_backend->DrawText(
         plot->core.x + ((plot->core.width / 2) - (active_backend->GetTextWidth(plot->data->title, strlen(plot->data->title)) / 2)),
@@ -59,7 +59,6 @@ static void draw_plot_title(GooeyPlot *plot, GooeyWindow *win)
 
 static void draw_x_axis_ticks(GooeyPlot *plot, GooeyWindow *win, float min_x_value, float x_value_spacing, uint32_t x_tick_count, float *plot_x_grid_coords)
 {
-    
 
     float x_default_value = ceilf(plot->data->x_data[0]);
     for (size_t idx = 0; idx < x_tick_count; ++idx)
@@ -93,7 +92,6 @@ static void draw_x_axis_ticks(GooeyPlot *plot, GooeyWindow *win, float min_x_val
 
 static void draw_y_axis_ticks(GooeyPlot *plot, GooeyWindow *win, float min_y_value, float y_value_spacing, uint32_t y_tick_count, float *plot_y_grid_coords)
 {
-    
 
     float y_default_value = ceil(plot->data->y_data[0]);
     for (size_t idx = 0; idx < y_tick_count; ++idx)
@@ -127,7 +125,6 @@ static void draw_y_axis_ticks(GooeyPlot *plot, GooeyWindow *win, float min_y_val
 
 static void draw_grid_lines(GooeyPlot *plot, GooeyWindow *win, uint32_t x_tick_count, uint32_t y_tick_count, float *plot_x_grid_coords, float *plot_y_grid_coords)
 {
-    
 
     for (size_t i = 0; i < x_tick_count - 1; ++i)
     {
@@ -154,7 +151,6 @@ static void draw_grid_lines(GooeyPlot *plot, GooeyWindow *win, uint32_t x_tick_c
 
 static void draw_data_points(GooeyPlot *plot, GooeyWindow *win, float min_x_value, float min_y_value, uint32_t x_tick_count, uint32_t y_tick_count, float *plot_x_coords, float *plot_y_coords)
 {
-    
 
     for (size_t j = 0; j < plot->data->data_count; ++j)
     {
@@ -262,7 +258,6 @@ void GooeyPlot_Draw(GooeyWindow *win)
         return;
     }
 
-
     for (size_t i = 0; i < win->plot_count; ++i)
     {
         GooeyPlot *plot = win->plots[i];
@@ -314,4 +309,3 @@ void GooeyPlot_Draw(GooeyWindow *win)
         free(plot_y_grid_coords);
     }
 }
-

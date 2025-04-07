@@ -3,122 +3,77 @@
 #include "gooey.h"
 #include <stdio.h>
 
-bool state = 0;
-GooeyWindow *childWindow;
-GooeyWindow *msgBox, *msgBox2;
-GooeySignal signal;
-GooeyCanvas *canvas;
+GooeyWindow *win;
+bool state = false;
 
-
-void messageBoxCallback(int option)
+void enable_overlay()
 {
-   // LOG_INFO("%d", option);
-}
-
-void messageBox2Callback(int option)
-{
-   // LOG_INFO("2 %d", option);
-}
-
-
-
-void signal_callback(void *context, void *data)
-{
-   // LOG_INFO("Recieved signal %s %s", (char *)context, (char *)data);
-}
-
-void signal_callback2(void *context, void *data)
-{
-  //  LOG_INFO("Recieved signal %s %s", (char *)context, (char *)data);
-}
-
-void onButtonClick()
-{
- //  LOG_INFO("Button clicked!");
-}
-
-void onCheckboxToggle(bool checked)
-{
-    printf("Checkbox toggled: %s\n", checked ? "Checked" : "Unchecked");
-}
-
-void onRadioButtonSelect(bool selected)
-{
-    printf("Radio button selected: %s\n", selected ? "Yes" : "No");
-}
-
-void onSliderChange(long int value)
-{
-    printf("Slider value changed: %ld\n", value);
-}
-
-void onDropdownChange(int selectedIndex)
-{
-    printf("Dropdown selected index: %d\n", selectedIndex);
-}
-
-void onTextChange(char *text)
-{
-    printf("Text changed: %s\n", text);
-}
-GooeyTheme theme;
-void activateDarkTheme()
-{
- //   GooeyWindow_SetTheme(win, "dark.json");
-}
-
-void activateLightTheme()
-{
-  //  GooeyWindow_SetTheme(win, "light.json");
-}
-
-void image_click_callback()
-{
-  //  LOG_INFO("Clicked!");
+  state = !state;
+  GooeyWindow_EnableDebugOverlay(win, state);
+  printf("%d \n", state);
 }
 
 int main()
 {
-    Gooey_Init();
+  Gooey_Init();
 
-    GooeyWindow *win = GooeyWindow_Create("window", 800, 600, true);
+  win = GooeyWindow_Create("window", 800, 600, true);
 
-    //GooeyWindow_SetContinuousRedraw(win);
-   GooeyWindow_EnableDebugOverlay(win, true);
+  GooeyWindow_SetContinuousRedraw(win);
 
-    GooeyMenu* menu = GooeyMenu_Set(win);
+  GooeyMenu *menu = GooeyMenu_Set(win);
 
-    GooeyMenuChild* file_child= GooeyMenu_AddChild(win, "File");
+  GooeyMenuChild *file_child = GooeyMenu_AddChild(win, "File");
 
-    GooeyMenuChild_AddElement(file_child, "New", NULL);
-    GooeyMenuChild_AddElement(file_child, "Open", NULL);
-    GooeyMenuChild_AddElement(file_child, "Save", NULL);
-    GooeyMenuChild_AddElement(file_child, "Exit", NULL);
+  GooeyMenuChild_AddElement(file_child, "New", NULL);
+  GooeyMenuChild_AddElement(file_child, "Open", NULL);
+  GooeyMenuChild_AddElement(file_child, "Save", NULL);
+  GooeyMenuChild_AddElement(file_child, "Exit", NULL);
 
-    GooeyMenuChild* settings_child= GooeyMenu_AddChild(win, "Settings");
+  GooeyMenuChild *settings_child = GooeyMenu_AddChild(win, "Settings");
 
-    GooeyMenuChild_AddElement(settings_child, "New", NULL);
-    GooeyMenuChild_AddElement(settings_child, "Open", NULL);
-    GooeyMenuChild_AddElement(settings_child, "Save", NULL);
-    GooeyMenuChild_AddElement(settings_child, "Exit", NULL);
+  GooeyMenuChild_AddElement(settings_child, "New", NULL);
+  GooeyMenuChild_AddElement(settings_child, "Open", NULL);
+  GooeyMenuChild_AddElement(settings_child, "Save", NULL);
+  GooeyMenuChild_AddElement(settings_child, "Exit", NULL);
 
-    GooeyMenuChild* about_child= GooeyMenu_AddChild(win, "About");
+  GooeyMenuChild *about_child = GooeyMenu_AddChild(win, "Debug");
 
-    GooeyMenuChild_AddElement(about_child, "New", NULL);
-    GooeyMenuChild_AddElement(about_child, "Open", NULL);
-    GooeyMenuChild_AddElement(about_child, "Save", NULL);
-    GooeyMenuChild_AddElement(about_child, "Exit", NULL);
+  GooeyMenuChild_AddElement(about_child, "Enable Overlay", enable_overlay);
 
+  GooeyWindow_SetContinuousRedraw(win);
+  GooeyWindow_MakeVisible(win, false);
+  GooeyWindow_MakeResizable(win, false);
+  GooeyButton *button_0 = GooeyButton_Create("Button", 198, 92, 100, 30, NULL);
+  GooeyList *list_1 = GooeyList_Create(58, 186, 200, 200, NULL);
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  const char *options_dropdown_2[2] = {"test", "test"};
+  GooeyDropdown *dropdown_2 = GooeyDropdown_Create(69, 58, 100, 30, options_dropdown_2, 2, NULL);
+  GooeySlider *slider_3 = GooeySlider_Create(231, 40, 150, 0, 100, true, NULL);
+ 
+ 
+  float x_data[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+  float y_data[4] = {-3.0f, 4.0f, 5.0f, 6.0f};
+ 
+  GooeyPlotData plot_data = {
+    .x_data = x_data,
+    .y_data = y_data,
+    .data_count = 4,
+    .x_step = 1.0f,
+    .y_step = 1.0f,
+  };
+  GooeyPlot *plot = GooeyPlot_Create(GOOEY_PLOT_LINE, &plot_data, 300, 100, 400, 400);
+  GooeyWindow_RegisterWidget(win, plot);
 
-    GooeyButton* button = GooeyButton_Create("Hello World", 40, 40, 120, 40, NULL);
+  GooeyWindow_RegisterWidget(win, button_0);
+  GooeyWindow_RegisterWidget(win, list_1);
+  GooeyWindow_RegisterWidget(win, dropdown_2);
+  GooeyWindow_RegisterWidget(win, slider_3);
 
-    GooeyWindow_RegisterWidget(win, button);
-    
-    GooeyWindow_Run(1, win);
+  GooeyWindow_Run(1, win);
 
+  GooeyWindow_Cleanup(1, win);
 
-    GooeyWindow_Cleanup(1, win);
-    
-
-    return 0;
+  return 0;
 }
