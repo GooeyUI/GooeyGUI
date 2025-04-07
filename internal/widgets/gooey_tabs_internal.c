@@ -42,7 +42,7 @@ void GooeyTabs_Draw(GooeyWindow *win)
             tabs->core.y,
             tabs->core.width,
             tabs->core.height,
-            win->active_theme->widget_base,
+            win->active_theme->widget_base,1.0f,
             win->creation_id);
 
         const size_t tab_count = tabs->tab_count;

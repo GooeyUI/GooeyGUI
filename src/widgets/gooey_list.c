@@ -32,7 +32,7 @@ GooeyList *GooeyList_Create(int x, int y, int width, int height, void (*callback
         return NULL;
     }
     *list = (GooeyList){0};
-
+    list->core.type = WIDGET_LIST;
     list->core.x = x;
     list->core.y = y;
     list->core.width = width;
@@ -80,8 +80,8 @@ void GooeyList_Draw(GooeyWindow *win)
 
         active_backend->DrawRectangle(
             list->core.x, list->core.y,
-            list->core.width, list->core.height,
-            win->active_theme->neutral, win->creation_id);
+            list->core.width, list->core.height, 
+            win->active_theme->neutral, 1.0f, win->creation_id);
 
         active_backend->FillRectangle(
             list->core.x + list->core.width, list->core.y,
@@ -91,7 +91,7 @@ void GooeyList_Draw(GooeyWindow *win)
         active_backend->DrawRectangle(
             list->core.x + list->core.width, list->core.y,
             list->thumb_width, list->core.height,
-            win->active_theme->neutral, win->creation_id);
+            win->active_theme->neutral, 1.0f, win->creation_id);
 
         int total_content_height = list->item_count * list->item_spacing;
         int visible_height = list->core.height;
@@ -130,7 +130,7 @@ void GooeyList_Draw(GooeyWindow *win)
                 active_backend->DrawText(
                     list->core.x + 10, title_y,
                     item.title, win->active_theme->neutral,
-                    0.25f, win->creation_id);
+                    0.27f, win->creation_id);
             }
 
             if (description_y < list->core.y + list->core.height && description_y > list->core.y + 5)
@@ -138,7 +138,7 @@ void GooeyList_Draw(GooeyWindow *win)
                 active_backend->DrawText(
                     list->core.x + 10, description_y,
                     item.description, win->active_theme->neutral,
-                    0.25f, win->creation_id);
+                    0.27f, win->creation_id);
             }
 
             int line_separator_y = current_y_offset + list->item_spacing - 10;

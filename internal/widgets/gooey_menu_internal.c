@@ -17,8 +17,13 @@ void GooeyMenu_Draw(GooeyWindow *win)
         {
             GooeyMenuChild *child = &win->menu->children[i];
             int text_width = active_backend->GetTextWidth(child->title, strlen(child->title));
+
+            if (child->is_open)
+                active_backend->FillRectangle(x_offset - 10, 0,
+                                              text_width + 20, 20, win->active_theme->primary, win->creation_id);
+
             active_backend->DrawText(x_offset, 15,
-                                     child->title, win->active_theme->neutral, 0.25f, win->creation_id);
+                                     child->title, child->is_open ? win->active_theme->base : win->active_theme->neutral, 0.27f, win->creation_id);
 
             if (child->is_open && child->menu_elements_count > 0)
             {
@@ -33,8 +38,11 @@ void GooeyMenu_Draw(GooeyWindow *win)
                 for (int j = 0; j < child->menu_elements_count; j++)
                 {
                     int element_y = submenu_y + (j * 25);
+
+
+
                     active_backend->DrawText(submenu_x + 5,
-                                             element_y + 18, child->menu_elements[j], win->active_theme->neutral, 0.25f, win->creation_id);
+                                             element_y + 18, child->menu_elements[j], win->active_theme->neutral, 0.27f, win->creation_id);
                     if (j < child->menu_elements_count - 1)
                     {
 
@@ -72,7 +80,6 @@ bool GooeyMenu_HandleClick(GooeyWindow *win, int x, int y)
             child->is_open = !child->is_open;
             win->menu->is_busy = !win->menu->is_busy;
 
-            
             return true;
         }
 
@@ -99,15 +106,16 @@ bool GooeyMenu_HandleClick(GooeyWindow *win, int x, int y)
                     }
                     win->menu->is_busy = 0;
 
-                    
                     return true;
-                } else {
+                }
+                else
+                {
                     for (int k = 0; k < win->menu->children_count; k++)
                     {
                         win->menu->children[k].is_open = 0;
                         win->menu->is_busy = 0;
                     }
-                    
+
                     return true;
                 }
             }

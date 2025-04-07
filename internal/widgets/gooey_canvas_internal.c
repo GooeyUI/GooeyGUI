@@ -19,7 +19,7 @@ void GooeyCanvas_Draw(GooeyWindow *win)
                 if (args->is_filled)
                     active_backend->FillRectangle(args->x, args->y, args->width, args->height, args->color, win->creation_id);
                 else
-                    active_backend->DrawRectangle(args->x, args->y, args->width, args->height, args->color, win->creation_id);
+                    active_backend->DrawRectangle(args->x, args->y, args->width, args->height, args->color,1.0f, win->creation_id);
                 break;
 
             case CANVA_DRAW_LINE:

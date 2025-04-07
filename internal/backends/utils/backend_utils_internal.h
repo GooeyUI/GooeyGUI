@@ -40,7 +40,8 @@ typedef struct Vertex
 {
     vec2 pos;
     vec3 col;
-    vec2 texCoord;   // Texture coordinates (u, v)
+    vec2 texCoord; // Texture coordinates (u, v)
+    float thickness;
 
 } Vertex;
 
@@ -57,13 +58,13 @@ static const char *rectangle_vertex_shader =
     "    TexCoord = texCoord;\n"
     "}\n";
 
-    static const char *rectangle_fragment_shader =
+static const char *rectangle_fragment_shader =
     "#version 330 core\n"
     "in vec3 color;\n"
     "in vec2 TexCoord;\n"
     "out vec4 fragment;\n"
     "uniform sampler2D tex;\n"
-    "uniform bool useTexture;\n"  
+    "uniform bool useTexture;\n"
 
     "void main() {\n"
     "    if (useTexture) {\n"
@@ -73,7 +74,6 @@ static const char *rectangle_vertex_shader =
     "    }\n"
     "}\n";
 
-
 static const char *text_vertex_shader_source = "#version 330 core\n"
                                                "layout(location = 0) in vec4 vertex;\n"
                                                "out vec2 TexCoords;\n"
@@ -82,7 +82,6 @@ static const char *text_vertex_shader_source = "#version 330 core\n"
                                                "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
                                                "    TexCoords = vec2(vertex.z, 1.0-vertex.w);\n"
                                                "}\n";
-
 static const char *text_fragment_shader_source = "#version 330 core\n"
                                                  "in vec2 TexCoords;\n"
                                                  "out vec4 color;\n"
@@ -94,12 +93,10 @@ static const char *text_fragment_shader_source = "#version 330 core\n"
                                                  "}\n";
 void check_shader_link(GLuint program);
 void check_shader_compile(GLuint shader);
-void get_window_size(glps_WindowManager* wm, size_t window_id, int *window_width, int *window_height);
-void convert_coords_to_ndc(glps_WindowManager* wm, size_t window_id,float *ndc_x, float *ndc_y, int x, int y);
-void convert_dimension_to_ndc(glps_WindowManager* wm, size_t window_id, float *ndc_w, float *ndc_h, int width, int height);
+void get_window_size(glps_WindowManager *wm, size_t window_id, int *window_width, int *window_height);
+void convert_coords_to_ndc(glps_WindowManager *wm, size_t window_id, float *ndc_x, float *ndc_y, int x, int y);
+void convert_dimension_to_ndc(glps_WindowManager *wm, size_t window_id, float *ndc_w, float *ndc_h, int width, int height);
 void convert_hex_to_rgb(vec3 *rgb, unsigned int color_hex);
 const char *LookupString(int keycode);
-
-
 
 #endif // BACKEND_UTILS_H

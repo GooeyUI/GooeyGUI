@@ -79,65 +79,45 @@ void image_click_callback()
 
 int main()
 {
-    /*set_logging_enabled(true);
-    set_minimum_log_level(DEBUG_LEVEL_INFO);
+    Gooey_Init();
 
-    Gooey_Init(GLPS);
+    GooeyWindow *win = GooeyWindow_Create("window", 800, 600, true);
 
-    GooeyWindow *win = GooeyWindow_Create("Gooey Showcase", 400, 900, 1);
-    GooeyTheme *theme = GooeyWindow_LoadTheme("dark.json");
-    GooeyWindow_SetTheme(win, theme);
-    GooeyImage_Add(win, "gooey.png",46, 80, 64, 64, image_click_callback);
+    //GooeyWindow_SetContinuousRedraw(win);
+   GooeyWindow_EnableDebugOverlay(win, true);
 
-   msgBox = GooeyMessageBox_Create("Exception thrown!", "This is a Simple MessageBox window, it is useful for displaying error messages, warnings and informational content!", MSGBOX_FAIL, messageBoxCallback);
- msgBox2 = GooeyMessageBox_Create("Exception thrown!", "This is a Simple MessageBox window, it is useful for displaying error messages, warnings and informational content!", MSGBOX_SUCCES, messageBox2Callback);
+    GooeyMenu* menu = GooeyMenu_Set(win);
 
-    signal = GooeySignal_Create();
-    GooeySignal_Link(&signal, signal_callback, "hello");
-    GooeySignal_Link(&signal, signal_callback2, "hello");
-    GooeySignal_Emit(&signal, "world");
+    GooeyMenuChild* file_child= GooeyMenu_AddChild(win, "File");
 
-    GooeyButton_Add(win, "Click here", 50, 150, 80, 30, onButtonClick);
-    GooeyCheckbox_Add(win, 50, 220, "Enable Option 1", onCheckboxToggle);
-    GooeyCheckbox_Add(win, 50, 260, "Enable Option 2", onCheckboxToggle);
-    GooeyCheckbox_Add(win, 50, 300, "Enable Option 3", onCheckboxToggle);
+    GooeyMenuChild_AddElement(file_child, "New", NULL);
+    GooeyMenuChild_AddElement(file_child, "Open", NULL);
+    GooeyMenuChild_AddElement(file_child, "Save", NULL);
+    GooeyMenuChild_AddElement(file_child, "Exit", NULL);
 
-    GooeyRadioButton_Add(win, 200, 220, "Option A", onRadioButtonSelect);
-    GooeyRadioButton_Add(win, 200, 260, "Option B", onRadioButtonSelect);
-    GooeyRadioButton_Add(win, 200, 300, "Option C", onRadioButtonSelect);
+    GooeyMenuChild* settings_child= GooeyMenu_AddChild(win, "Settings");
 
-    GooeySlider_Add(win, 50, 250, 350, 0, 100, true, onSliderChange);
+    GooeyMenuChild_AddElement(settings_child, "New", NULL);
+    GooeyMenuChild_AddElement(settings_child, "Open", NULL);
+    GooeyMenuChild_AddElement(settings_child, "Save", NULL);
+    GooeyMenuChild_AddElement(settings_child, "Exit", NULL);
 
-    const char *options[] = {"Option 1", "Option 2", "Option 3"};
-    GooeyDropdown_Add(win, 50, 350, 400, 30, options, 3, onDropdownChange);
+    GooeyMenuChild* about_child= GooeyMenu_AddChild(win, "About");
 
-    GooeyTextBox_Add(win, 50, 300, 200, 25, "test", onTextChange);
+    GooeyMenuChild_AddElement(about_child, "New", NULL);
+    GooeyMenuChild_AddElement(about_child, "Open", NULL);
+    GooeyMenuChild_AddElement(about_child, "Save", NULL);
+    GooeyMenuChild_AddElement(about_child, "Exit", NULL);
 
-    GooeyMenu *menu = GooeyMenu_Set(win);
-    GooeyMenuChild *fileMenu = GooeyMenu_AddChild(win, "File");
-    GooeyMenuChild_AddElement(fileMenu, "Open", NULL);
-    GooeyMenuChild_AddElement(fileMenu, "Save", NULL);
 
-    GooeyMenuChild *editMenu = GooeyMenu_AddChild(win, "Settings");
-    GooeyMenuChild_AddElement(editMenu, "Dark Theme", activateDarkTheme);
-    GooeyMenuChild_AddElement(editMenu, "Light Theme", activateLightTheme);
-    GooeyRadioButtonGroup *rbg = GooeyRadioButtonGroup_Create(win);
-    GooeyRadioButtonGroup_AddChild(win, rbg, 50, 440, NULL, NULL);
+    GooeyButton* button = GooeyButton_Create("Hello World", 40, 40, 120, 40, NULL);
 
-    GooeyRadioButtonGroup_AddChild(win, rbg, 50, 470, NULL, NULL);
-
-    GooeyRadioButtonGroup_AddChild(win, rbg, 50, 500, NULL, NULL);
-
-    GooeyRadioButtonGroup_AddChild(win, rbg, 50, 530, NULL, NULL);
-
-    LOG_PERFORMANCE(NULL);
+    GooeyWindow_RegisterWidget(win, button);
     
-    GooeyWindow_Run(3, win, msgBox, msgBox2);
-    LOG_PERFORMANCE("GooeyWindow_Run");
+    GooeyWindow_Run(1, win);
 
-    save_log_file("logs.txt");
 
-    GooeyWindow_Cleanup(3, win, msgBox, msgBox2);*/
+    GooeyWindow_Cleanup(1, win);
     
 
     return 0;

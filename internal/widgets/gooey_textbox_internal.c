@@ -16,7 +16,7 @@ void GooeyTextbox_Draw(GooeyWindow *win)
 
         active_backend->DrawRectangle(textbox->core.x, textbox->core.y,
                                       textbox->core.width, textbox->core.height,
-                                      textbox->focused ? win->active_theme->primary : win->active_theme->neutral, win->creation_id);
+                                      textbox->focused ? win->active_theme->primary : win->active_theme->neutral,1.0f, win->creation_id);
 
         int text_x = textbox->core.x + 5;
         int text_y = textbox->core.y + (textbox->core.height / 2) + 5;
@@ -35,7 +35,7 @@ void GooeyTextbox_Draw(GooeyWindow *win)
         strncpy(display_text, textbox->text + start_index, sizeof(display_text) - 1);
         display_text[sizeof(display_text) - 1] = '\0';
 
-        active_backend->DrawText(text_x, text_y, display_text, win->active_theme->neutral, 0.25f, win->creation_id);
+        active_backend->DrawText(text_x, text_y, display_text, win->active_theme->neutral, 0.27f, win->creation_id);
 
         if (textbox->focused)
         {
@@ -47,7 +47,7 @@ void GooeyTextbox_Draw(GooeyWindow *win)
         {
 
             if (strcmp(textbox->placeholder, "") != 0 && strlen(textbox->text) == 0)
-                active_backend->DrawText(text_x, text_y, textbox->placeholder, win->active_theme->neutral, 0.25f, win->creation_id);
+                active_backend->DrawText(text_x, text_y, textbox->placeholder, win->active_theme->neutral, 0.27f, win->creation_id);
         }
     }
 }

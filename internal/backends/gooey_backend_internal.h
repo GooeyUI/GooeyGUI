@@ -14,7 +14,6 @@
 
 #include "common/gooey_common.h"
 
-
 /**
  * @brief Enumeration for available backends in the Gooey framework.
  */
@@ -57,17 +56,20 @@ typedef struct GooeyBackend
     unsigned int (*LoadImageFromBin)(unsigned char *data, unsigned long binary_len);                       /**< Loads an image from binary data. */
     void (*DrawImage)(unsigned int texture_id, int x, int y, int width, int height, int window_id);        /**< Draws an image on a window. */
     void (*FillRectangle)(int x, int y, int width, int height, unsigned long color, int window_id);        /**< Fills a rectangle on a window. */
-    void (*DrawRectangle)(int x, int y, int width, int height, unsigned long color, int window_id);        /**< Draws the outline of a rectangle on a window. */
-    void (*FillArc)(int x, int y, int width, int height, int angle1, int angle2, int window_id);           /**< Fills an arc on a window. */
-    const char *(*GetKeyFromCode)(void *gooey_event);                                                /**< Converts a key code to a string representation. */
-    void *(*HandleEvents)(void);                                                                     /**< Handles input events. */
-    void (*ResetEvents)(GooeyWindow *win);                                                                 /**< Resets the event state for a window. */
-    void (*GetWinDim)(int *width, int *height, int window_id);                                             /**< Retrieves the dimensions of a window. */
-    double (*GetWinFramerate)(int window_id);                                                                /**< Gets FPS for window. */
-    void (*DrawLine)(int x1, int y1, int x2, int y2, unsigned long color, int window_id); /**< Draws a line on a window. */
-    float (*GetTextWidth)(const char *text, int length);                                  /**< Calculates the width of a text string. */
-    float (*GetTextHeight)(const char *text, int length);                                 /**< Calculates the height of a text string. */
-    void (*SetCursor)(GOOEY_CURSOR cursor);                                               /**< Sets the cursor type for the window. */
+    void (*DrawRectangle)(int x, int y, int width, int height,
+                          long unsigned int color, float thickness,
+                          int window_id); /**< Draws the outline of a rectangle on a window. */
+
+    void (*FillArc)(int x, int y, int width, int height, int angle1, int angle2, int window_id); /**< Fills an arc on a window. */
+    const char *(*GetKeyFromCode)(void *gooey_event);                                            /**< Converts a key code to a string representation. */
+    void *(*HandleEvents)(void);                                                                 /**< Handles input events. */
+    void (*ResetEvents)(GooeyWindow *win);                                                       /**< Resets the event state for a window. */
+    void (*GetWinDim)(int *width, int *height, int window_id);                                   /**< Retrieves the dimensions of a window. */
+    double (*GetWinFramerate)(int window_id);                                                    /**< Gets FPS for window. */
+    void (*DrawLine)(int x1, int y1, int x2, int y2, unsigned long color, int window_id);        /**< Draws a line on a window. */
+    float (*GetTextWidth)(const char *text, int length);                                         /**< Calculates the width of a text string. */
+    float (*GetTextHeight)(const char *text, int length);                                        /**< Calculates the height of a text string. */
+    void (*SetCursor)(GOOEY_CURSOR cursor);                                                      /**< Sets the cursor type for the window. */
 } GooeyBackend;
 
 /**

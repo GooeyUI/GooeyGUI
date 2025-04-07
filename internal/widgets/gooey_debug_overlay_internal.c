@@ -17,16 +17,83 @@
 
 #include "gooey_debug_overlay_internal.h"
 #include "backends/gooey_backend_internal.h"
+#include "event/gooey_event_internal.h"
+#include <time.h>
 
 #define OVERLAY_POS 20
 
 void GooeyDebugOverlay_Draw(GooeyWindow *win)
 {
+    GooeyEvent *event = (GooeyEvent*) win->current_event;
 
-    int window_width, window_height;
-    active_backend->GetWinDim(&window_width, &window_height, win->creation_id);
-    char overlay_text[1024];
-    snprintf(overlay_text, sizeof(overlay_text), "FPS %.0lf", active_backend->GetWinFramerate(win->creation_id));
-    active_backend->DrawText(OVERLAY_POS, OVERLAY_POS, overlay_text, win->active_theme->primary, 0.3f, win->creation_id);
-    
+    if (win->enable_debug_overlay)
+    {
+        int window_width, window_height;
+        active_backend->GetWinDim(&window_width, &window_height, win->creation_id);
+
+        // Calculate text positions
+        int x_pos = 500;
+        int y_pos = 50;
+        int line_height = 18;
+
+        // Draw semi-transparent background
+        active_backend->FillRectangle(x_pos - 10, y_pos - 10,
+                                      300, 150,
+                                      0x3333AAAA, win->creation_id);
+         y_pos += line_height;
+        // Frame rate info
+        char fps_text[64];
+        snprintf(fps_text, sizeof(fps_text), "FPS: %.1f",
+              active_backend->GetWinFramerate(win->creation_id));
+        active_backend->DrawText(x_pos, y_pos, fps_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // Window info
+        char win_text[64];
+        snprintf(win_text, sizeof(win_text), "Window: %dx%d",
+                 window_width, window_height);
+        active_backend->DrawText(x_pos, y_pos, win_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // Mouse position
+        char mouse_text[64];
+        snprintf(mouse_text, sizeof(mouse_text), "Mouse: %d,%d",
+                                                     event->mouse_move.x, event->mouse_move.y);
+        active_backend->DrawText(x_pos, y_pos, mouse_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // Memory usage (simplified)
+        char mem_text[64];
+        snprintf(mem_text, sizeof(mem_text), "Memory: %.2f MB",
+                 90000000 / (1024.0 * 1024.0));
+        active_backend->DrawText(x_pos, y_pos, mem_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // Widget count
+        char widget_text[64];
+        snprintf(widget_text, sizeof(widget_text), "Widgets: %d",
+                 win->widget_count);
+        active_backend->DrawText(x_pos, y_pos, widget_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // Render stats
+        char render_text[64];
+        snprintf(render_text, sizeof(render_text), "Draw calls: %d",
+                 2);
+        active_backend->DrawText(x_pos, y_pos, render_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+        y_pos += line_height;
+
+        // System time
+        time_t now = time(NULL);
+        char time_text[64];
+        strftime(time_text, sizeof(time_text), "%H:%M:%S", localtime(&now));
+        active_backend->DrawText(x_pos, y_pos, time_text,
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
+    }
 }

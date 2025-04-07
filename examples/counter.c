@@ -20,7 +20,7 @@ int main()
 
     GooeyLayout *layout = GooeyLayout_Create(&win, LAYOUT_VERTICAL, 10, 50, 280, 180);
 
-    counterLabel = GooeyLabel_Add(&win, "Counter: 0", 0.25f, 0, 0);
+    counterLabel = GooeyLabel_Add(&win, "Counter: 0", 0.27f, 0, 0);
     GooeyLayout_AddChild(layout, counterLabel);
 
     GooeyButton *incrementButton = GooeyButton_Add(&win, "Increment", 0, 0, 100, 30, onIncrementClick);

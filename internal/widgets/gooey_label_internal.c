@@ -4,6 +4,7 @@
 
 void GooeyLabel_Draw(GooeyWindow *win)
 {
+    printf("%ld \n", win->label_count);
     for (size_t i = 0; i < win->label_count; ++i)
     {
         GooeyLabel* label = win->labels[i];

@@ -60,6 +60,9 @@
   */
  GooeyWindow *GooeyWindow_Create(const char *title, int width, int height, bool visibility);
  
+ void GooeyWindow_EnableDebugOverlay(GooeyWindow* win, bool is_enabled);
+
+
  /**
   * @brief Sets the visibility of a Gooey window.
   * 

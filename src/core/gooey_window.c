@@ -436,6 +436,7 @@ GooeyWindow *GooeyWindow_Create(const char *title, int width, int height, bool v
     win->menu = NULL;
 
     *win->active_theme = (GooeyTheme){.base = baseColor, .neutral = neutralColor, .primary = primaryColor, .widget_base = widgetBaseColor, .danger = dangerColor, .info = infoColor, .success = successColor};
+    win->enable_debug_overlay = false;
     win->tab_count = 0;
     win->visibility = visibilty;
     win->image_count = 0;
@@ -546,6 +547,8 @@ void GooeyWindow_Redraw(size_t window_id, void *data)
     active_backend->UpdateBackground(window);
     needs_redraw |= GooeySlider_HandleDrag(window, event);
     needs_redraw |= GooeyList_HandleThumbScroll(window, event);
+    needs_redraw |= GooeyButton_HandleHover(window, event->mouse_move.x, event->mouse_move.y);
+
     switch (event->type)
     {
     case GOOEY_EVENT_RESIZE:
@@ -668,7 +671,6 @@ void GooeyWindow_Run(int num_windows, GooeyWindow *first_win, ...)
 
     active_backend->SetupCallbacks(GooeyWindow_Redraw, windows);
     active_backend->Run();
-    
 }
 
 void GooeyWindow_RequestRedraw(GooeyWindow *win)
@@ -680,4 +682,9 @@ void GooeyWindow_RequestRedraw(GooeyWindow *win)
 void GooeyWindow_SetContinuousRedraw(GooeyWindow *win)
 {
     win->continuous_redraw = true;
+}
+
+void GooeyWindow_EnableDebugOverlay(GooeyWindow *win, bool is_enabled)
+{
+    win->enable_debug_overlay = is_enabled;
 }

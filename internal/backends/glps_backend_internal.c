@@ -165,10 +165,15 @@ void glps_set_foreground(long unsigned int color)
 {
     ctx.selected_color = color;
 }
-
-void glps_draw_rectangle(int x, int y, int width, int height, long unsigned int color, int window_id)
+void glps_draw_rectangle(int x, int y, int width, int height,
+                         long unsigned int color, float thickness,
+                         int window_id)
 {
     glps_wm_set_window_ctx_curr(ctx.wm, window_id);
+
+    int win_width, win_height;
+    glps_window_dim(&win_width, &win_height, window_id);
+
     float ndc_x, ndc_y;
     float ndc_width, ndc_height;
     vec3 color_rgb;
@@ -177,24 +182,68 @@ void glps_draw_rectangle(int x, int y, int width, int height, long unsigned int 
     convert_dimension_to_ndc(ctx.wm, window_id, &ndc_width, &ndc_height, width, height);
     convert_hex_to_rgb(&color_rgb, color);
 
-    Vertex vertices[4];
+    float ndc_thickness = (thickness * 2.0f) / win_width;
 
-    for (int i = 0; i < 4; i++)
-    {
-        vertices[i].col[0] = color_rgb[0];
-        vertices[i].col[1] = color_rgb[1];
-        vertices[i].col[2] = color_rgb[2];
-    }
+    Vertex vertices[24]; 
 
     vertices[0].pos[0] = ndc_x;
     vertices[0].pos[1] = ndc_y;
     vertices[1].pos[0] = ndc_x + ndc_width;
     vertices[1].pos[1] = ndc_y;
-    vertices[2].pos[0] = ndc_x + ndc_width;
-    vertices[2].pos[1] = ndc_y + ndc_height;
+    vertices[2].pos[0] = ndc_x;
+    vertices[2].pos[1] = ndc_y + ndc_thickness;
+    vertices[3].pos[0] = ndc_x + ndc_width;
+    vertices[3].pos[1] = ndc_y;
+    vertices[4].pos[0] = ndc_x + ndc_width;
+    vertices[4].pos[1] = ndc_y + ndc_thickness;
+    vertices[5].pos[0] = ndc_x;
+    vertices[5].pos[1] = ndc_y + ndc_thickness;
 
-    vertices[3].pos[0] = ndc_x;
-    vertices[3].pos[1] = ndc_y + ndc_height;
+    vertices[6].pos[0] = ndc_x + ndc_width - ndc_thickness;
+    vertices[6].pos[1] = ndc_y;
+    vertices[7].pos[0] = ndc_x + ndc_width;
+    vertices[7].pos[1] = ndc_y;
+    vertices[8].pos[0] = ndc_x + ndc_width - ndc_thickness;
+    vertices[8].pos[1] = ndc_y + ndc_height;
+    vertices[9].pos[0] = ndc_x + ndc_width;
+    vertices[9].pos[1] = ndc_y;
+    vertices[10].pos[0] = ndc_x + ndc_width;
+    vertices[10].pos[1] = ndc_y + ndc_height;
+    vertices[11].pos[0] = ndc_x + ndc_width - ndc_thickness;
+    vertices[11].pos[1] = ndc_y + ndc_height;
+
+    vertices[12].pos[0] = ndc_x;
+    vertices[12].pos[1] = ndc_y + ndc_height - ndc_thickness;
+    vertices[13].pos[0] = ndc_x + ndc_width;
+    vertices[13].pos[1] = ndc_y + ndc_height - ndc_thickness;
+    vertices[14].pos[0] = ndc_x;
+    vertices[14].pos[1] = ndc_y + ndc_height;
+    vertices[15].pos[0] = ndc_x + ndc_width;
+    vertices[15].pos[1] = ndc_y + ndc_height - ndc_thickness;
+    vertices[16].pos[0] = ndc_x + ndc_width;
+    vertices[16].pos[1] = ndc_y + ndc_height;
+    vertices[17].pos[0] = ndc_x;
+    vertices[17].pos[1] = ndc_y + ndc_height;
+
+    vertices[18].pos[0] = ndc_x;
+    vertices[18].pos[1] = ndc_y;
+    vertices[19].pos[0] = ndc_x + ndc_thickness;
+    vertices[19].pos[1] = ndc_y;
+    vertices[20].pos[0] = ndc_x;
+    vertices[20].pos[1] = ndc_y + ndc_height;
+    vertices[21].pos[0] = ndc_x + ndc_thickness;
+    vertices[21].pos[1] = ndc_y;
+    vertices[22].pos[0] = ndc_x + ndc_thickness;
+    vertices[22].pos[1] = ndc_y + ndc_height;
+    vertices[23].pos[0] = ndc_x;
+    vertices[23].pos[1] = ndc_y + ndc_height;
+
+    for (int i = 0; i < 24; i++)
+    {
+        vertices[i].col[0] = color_rgb[0];
+        vertices[i].col[1] = color_rgb[1];
+        vertices[i].col[2] = color_rgb[2];
+    }
 
     glUseProgram(ctx.shape_program);
     glUniform1i(glGetUniformLocation(ctx.shape_program, "useTexture"), GL_FALSE);
@@ -203,7 +252,7 @@ void glps_draw_rectangle(int x, int y, int width, int height, long unsigned int 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     glBindVertexArray(ctx.shape_vaos[window_id]);
-    glDrawArrays(GL_LINE_LOOP, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 24);
 }
 
 void glps_draw_line(int x1, int y1, int x2, int y2, long unsigned int color, int window_id)
@@ -855,7 +904,7 @@ float glps_get_text_width(const char *text, int length)
     float total_width = 0.0f;
     for (int i = 0; i < length; ++i)
     {
-        total_width += (ctx.characters[text[i]].advance / 64.0f) * 0.25f;
+        total_width += (ctx.characters[text[i]].advance / 64.0f) * 0.27f;
     }
     return total_width;
 }
@@ -866,7 +915,7 @@ float glps_get_text_height(const char *text, int length)
 
     for (int i = 0; i < length; ++i)
     {
-        float char_height = ctx.characters[text[i]].height * 0.25f;
+        float char_height = ctx.characters[text[i]].height * 0.27f;
         if (char_height > max_height)
         {
             max_height = char_height;
@@ -894,7 +943,7 @@ static void drag_n_drop_callback(size_t origin_window_id, char *mime, char *buff
 {
     GooeyWindow **windows = (GooeyWindow **)data;
     GooeyWindow *window = windows[origin_window_id];
-    GooeyEvent* event = (GooeyEvent*) window->current_event;
+    GooeyEvent *event = (GooeyEvent *)window->current_event;
     event->type = GOOEY_EVENT_DROP;
     event->drop_data.drop_x = x;
     event->drop_data.drop_y = y;
@@ -944,7 +993,7 @@ size_t glps_get_total_window_count()
 void glps_reset_events(GooeyWindow *win)
 {
     // Allow only one event at a time, so it doesn't cause redraws.
-    GooeyEvent *event = (GooeyEvent*) win->current_event;
+    GooeyEvent *event = (GooeyEvent *)win->current_event;
     event->type = -1;
 }
 

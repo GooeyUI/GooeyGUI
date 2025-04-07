@@ -19,7 +19,7 @@ void GooeyDropdown_Draw(GooeyWindow *win)
         active_backend->DrawText(dropdown->core.x + 5,
                                  dropdown->core.y + 20,
                                  dropdown->options[dropdown->selected_index],
-                                 win->active_theme->neutral, 0.25f, win->creation_id);
+                                 win->active_theme->neutral, 0.27f, win->creation_id);
         int text_width = active_backend->GetTextWidth(dropdown->options[dropdown->selected_index], strlen(dropdown->options[dropdown->selected_index]));
 
         if (dropdown->is_open && dropdown->num_options > 0)
@@ -31,12 +31,12 @@ void GooeyDropdown_Draw(GooeyWindow *win)
             active_backend->FillRectangle(submenu_x, submenu_y,
                                           submenu_width, submenu_height, win->active_theme->widget_base, win->creation_id);
             active_backend->DrawRectangle(submenu_x, submenu_y,
-                                          submenu_width, submenu_height, win->active_theme->primary, win->creation_id);
+                                          submenu_width, submenu_height, win->active_theme->primary,1.0f, win->creation_id);
             for (int j = 0; j < dropdown->num_options; j++)
             {
                 int element_y = submenu_y + (j * 25);
                 active_backend->DrawText(submenu_x + 5,
-                                         element_y + 18, dropdown->options[j], win->active_theme->neutral, 0.25f, win->creation_id);
+                                         element_y + 18, dropdown->options[j], win->active_theme->neutral, 0.27f, win->creation_id);
                 if (j < dropdown->num_options - 1)
                 {
                     active_backend->DrawLine(submenu_x,

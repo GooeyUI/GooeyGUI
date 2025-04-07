@@ -62,6 +62,7 @@ typedef enum
     WIDGET_PLOT,        /**< Plot widget */
     WIDGET_DROP_SURFACE,
     WIDGET_IMAGE,
+    WIDGET_LIST,
     WIDGET_TABS
 } WIDGET_TYPE;
 
@@ -477,6 +478,7 @@ typedef struct
     WINDOW_TYPE type; /**< Type of the window */
     int creation_id;  /**< Unique window ID */
     bool visibility;  /**< Whether the window is visible */
+    bool enable_debug_overlay;
     bool continuous_redraw;
     GooeyButton **buttons;                       /**< List of buttons in the window */
     GooeyLabel **labels;                         /**< List of labels in the window */

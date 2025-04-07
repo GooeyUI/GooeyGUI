@@ -26,6 +26,8 @@
  */
 bool GooeyButton_HandleClick(GooeyWindow *win, int x, int y);
 
+
+bool GooeyButton_HandleHover(GooeyWindow *win, int x, int y);
 /**
  * @brief Draws the button on the window.
  *
