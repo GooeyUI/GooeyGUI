@@ -5,12 +5,20 @@
 
 GooeyWindow *win;
 bool state = false;
-
+GooeyProgressBar* progressbar;
+int progress_percentage = 0;
 void enable_overlay()
 {
   state = !state;
   GooeyWindow_EnableDebugOverlay(win, state);
   printf("%d \n", state);
+}
+
+void progress()
+{
+  progress_percentage += 10;
+  GooeyProgressBar_Update(progressbar, progress_percentage);
+
 }
 
 int main()
@@ -20,12 +28,13 @@ int main()
   win = GooeyWindow_Create("window", 800, 600, true);
 
   GooeyWindow_SetContinuousRedraw(win);
+  //GooeyWindow_SetTheme(win, GooeyWindow_LoadTheme("dark.json"));
 
   GooeyMenu *menu = GooeyMenu_Set(win);
 
   GooeyMenuChild *file_child = GooeyMenu_AddChild(win, "File");
 
-  GooeyMenuChild_AddElement(file_child, "New", NULL);
+  GooeyMenuChild_AddElement(file_child, "New", progress);
   GooeyMenuChild_AddElement(file_child, "Open", NULL);
   GooeyMenuChild_AddElement(file_child, "Save", NULL);
   GooeyMenuChild_AddElement(file_child, "Exit", NULL);
@@ -48,11 +57,29 @@ int main()
   GooeyList *list_1 = GooeyList_Create(58, 186, 200, 200, NULL);
   GooeyList_AddItem(list_1, "test", "test");
   GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
+  GooeyList_AddItem(list_1, "test", "test");
   const char *options_dropdown_2[2] = {"test", "test"};
   GooeyDropdown *dropdown_2 = GooeyDropdown_Create(69, 58, 100, 30, options_dropdown_2, 2, NULL);
   GooeySlider *slider_3 = GooeySlider_Create(231, 40, 150, 0, 100, true, NULL);
- 
- 
+  progressbar = GooeyProgressBar_Create(40, 40, 100, 30, progress_percentage);
+
   float x_data[4] = {1.0f, 2.0f, 3.0f, 4.0f};
   float y_data[4] = {-3.0f, 4.0f, 5.0f, 6.0f};
  
@@ -64,7 +91,8 @@ int main()
     .y_step = 1.0f,
   };
   GooeyPlot *plot = GooeyPlot_Create(GOOEY_PLOT_LINE, &plot_data, 300, 100, 400, 400);
-  GooeyWindow_RegisterWidget(win, plot);
+ GooeyWindow_RegisterWidget(win, plot);
+ //GooeyWindow_RegisterWidget(win, progressbar);
 
   GooeyWindow_RegisterWidget(win, button_0);
   GooeyWindow_RegisterWidget(win, list_1);

@@ -23,6 +23,7 @@ set(SOURCES
     src/widgets/gooey_slider.c
     src/widgets/gooey_textbox.c
     src/widgets/gooey_plot.c
+    src/widgets/gooey_progressbar.c
     src/widgets/gooey_image.c
     src/widgets/gooey_tabs.c
     src/signals/gooey_signals.c
@@ -40,6 +41,7 @@ set(SOURCES
     internal/widgets/gooey_plot_internal.c
     internal/widgets/gooey_image_internal.c
     internal/widgets/gooey_tabs_internal.c
+    internal/widgets/gooey_progressbar_internal.c
     internal/widgets/gooey_debug_overlay_internal.c
     internal/widgets/gooey_window_internal.c
     internal/backends/utils/glad/glad.c

@@ -9,11 +9,11 @@ void GooeyButton_Draw(GooeyWindow *win)
         if (!button->core.is_visible)
             continue;
 
-        unsigned long button_color = 0xe1e1e1;
+        unsigned long button_color = win->active_theme->widget_base;
 
         if (button->hover)
         {
-            button_color = 0xc0c0c0;
+            button_color = ((button_color & 0x7E7E7E) >> 1) | (button_color & 0x808080) >> 1; // A little darker
         }
         active_backend->FillRectangle(button->core.x,
                                       button->core.y, button->core.width, button->core.height, button_color, win->creation_id);

@@ -36,6 +36,7 @@
 #include "widgets/gooey_slider.h"
 #include "widgets/gooey_textbox.h"
 #include "widgets/gooey_plot.h"
+#include "widgets/gooey_progressbar.h"
 #include "signals/gooey_signals.h"
 
 // Threads

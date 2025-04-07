@@ -81,12 +81,16 @@ void GooeyWindow_Internal_RegisterWidget(GooeyWindow *win, void *widget)
         win->lists[win->list_count++] = (GooeyList *)widget;
         break;
     }
+    case WIDGET_PROGRESSBAR:
+    {
+        win->progressbars[win->progressbar_count++] = (GooeyProgressBar *)widget;
+        break;
+    }
     case WIDGET_TABS:
     {
         win->tabs[win->tab_count++] = (GooeyTabs *)widget;
         break;
     }
-
 
     default:
         LOG_ERROR("Invalid widget type.");

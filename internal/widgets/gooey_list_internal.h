@@ -46,7 +46,7 @@
   * @return `true` if the click event was handled, otherwise `false`.
   */
  bool GooeyList_HandleClick(GooeyWindow *window, int mouse_x, int mouse_y);
- 
+ bool GooeyList_HandleHover(GooeyWindow *window, int mouse_x, int mouse_y);
  /**
   * @brief Draws all attached list widgets onto the specified window.
   *

@@ -63,6 +63,7 @@ typedef enum
     WIDGET_DROP_SURFACE,
     WIDGET_IMAGE,
     WIDGET_LIST,
+    WIDGET_PROGRESSBAR,
     WIDGET_TABS
 } WIDGET_TYPE;
 
@@ -190,6 +191,7 @@ typedef struct
     size_t item_count;           /**< List widget item count */
     bool show_separator;         /**< Show or hide separator */
     void (*callback)(int index); /**< Callback function for item selection */
+    int element_hovered_over;
 } GooeyList;
 
 /**
@@ -225,6 +227,12 @@ typedef struct
     bool show_hints;              /**< Whether to show hints for the slider */
     void (*callback)(long value); /**< Callback function when the slider value changes */
 } GooeySlider;
+
+typedef struct
+{
+    GooeyWidget core;
+    long value;
+} GooeyProgressBar;
 
 /**
  * @brief A structure representing a dropdown menu widget.
@@ -306,7 +314,6 @@ typedef struct
     CanvaElement *elements; /**< List of drawing operations */
     int element_count;      /**< Number of drawing operations */
 } GooeyCanvas;
-
 
 /**
  * @brief Arguments for drawing a rectangle on a canvas.
@@ -471,7 +478,6 @@ typedef enum
     WINDOW_MSGBOX   /**< Message box window */
 } WINDOW_TYPE;
 
-
 /**
  * @brief A structure representing a window containing various widgets.
  */
@@ -491,15 +497,16 @@ typedef struct
     GooeyRadioButtonGroup **radio_button_groups; /**< List of radio button groups in the window */
     GooeyTextbox **textboxes;                    /**< List of textboxes in the window */
     GooeyLayout **layouts;                       /**< List of layouts in the window */
-    GooeyMenu *menu;                            /**< Menu in the window */
+    GooeyMenu *menu;                             /**< Menu in the window */
     GooeyList **lists;                           /**< List of list widgets in the window */
     GooeyCanvas **canvas;                        /**< List of canvas widgets in the window */
     GooeyPlot **plots;                           /**< List of plot widgets in the window */
-    GooeyWidget **widgets;                      /**< Unified list of all widgets in the window */
-    void *current_event;                  /**< Current event being processed */
-    GooeyTheme *active_theme;                   /**< Active theme for the window */
-    GooeyImage **images;                         /**< List of image widgets in the window */
-    GooeyDropSurface **drop_surface;             /**< List of drop surface widgets in the window */
+    GooeyProgressBar **progressbars;
+    GooeyWidget **widgets;           /**< Unified list of all widgets in the window */
+    void *current_event;             /**< Current event being processed */
+    GooeyTheme *active_theme;        /**< Active theme for the window */
+    GooeyImage **images;             /**< List of image widgets in the window */
+    GooeyDropSurface **drop_surface; /**< List of drop surface widgets in the window */
     GooeyTabs **tabs;
 
     size_t tab_count;
@@ -518,7 +525,8 @@ typedef struct
     size_t radio_button_group_count; /**< Number of radio button groups */
     size_t canvas_count;             /**< Number of canvas widgets */
     size_t plot_count;               /**< Number of plot widgets */
-    size_t widget_count;             /**< Total number of widgets */
+    size_t progressbar_count;
+    size_t widget_count; /**< Total number of widgets */
 } GooeyWindow;
 
 #endif
