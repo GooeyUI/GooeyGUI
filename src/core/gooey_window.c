@@ -234,6 +234,21 @@ void GooeyWindow_FreeResources(GooeyWindow *win)
         win->images = NULL;
     }
 
+    if(win->progressbars)
+    {
+        for(size_t i=0; i<win->progressbar_count; ++i)
+        {
+            if(win->progressbars[i])
+            {
+                free(win->progressbars[i]);
+                win->progressbars[i] = NULL;
+            }
+        }
+
+        free(win->progressbars);
+        win->progressbars = NULL;
+    }
+
     if (win->current_event)
     {
         free(win->current_event);

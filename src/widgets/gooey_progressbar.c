@@ -33,7 +33,7 @@ GooeyProgressBar *GooeyProgressBar_Create(int x, int y, int width, int height, l
     if(initial_value < 0 || initial_value > 100)
     {
         LOG_WARNING("Progress bar initial value exceeds limits [0, 100]");
-        return;
+        return NULL;
     }
 
 
@@ -57,11 +57,11 @@ void GooeyProgressBar_Update(GooeyProgressBar *progressbar, long new_value)
         return;
     }
 
-    if(new_value < 0 || new_value > 100)
+    if(new_value < 0)
     {
-        LOG_WARNING("Progress bar update value exceeds limits [0, 100]");
+        LOG_WARNING("Progress bar update value negative");
         return;
     }
 
-    progressbar->value = new_value;
+    progressbar->value = new_value > 100 ? 100 : new_value;
 }

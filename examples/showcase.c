@@ -11,7 +11,6 @@ void enable_overlay()
 {
   state = !state;
   GooeyWindow_EnableDebugOverlay(win, state);
-  printf("%d \n", state);
 }
 
 void progress()

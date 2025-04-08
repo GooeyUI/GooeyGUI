@@ -13,7 +13,7 @@ void *progress_thread(void *arg)
     {
         if (progress_percentage < 100)
         {
-            progress_percentage += 5;
+            progress_percentage += 15;
             GooeyProgressBar_Update(progressbar, progress_percentage);
         }
         else
@@ -57,7 +57,8 @@ int main()
 
     Gooey_Init();
     win = GooeyWindow_Create("Progress Demo", 800, 600, true);
-    GooeyWindow_SetContinuousRedraw(win);
+    //GooeyWindow_SetContinuousRedraw(win);
+    //GooeyWindow_EnableDebugOverlay(win, 1);
 
     GooeyMenu *menu = GooeyMenu_Set(win);
     GooeyMenuChild *control_child = GooeyMenu_AddChild(win, "Control");
