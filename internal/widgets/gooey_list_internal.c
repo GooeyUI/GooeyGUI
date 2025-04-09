@@ -148,7 +148,8 @@ bool GooeyList_HandleClick(GooeyWindow *window, int mouse_x, int mouse_y)
     for (size_t i = 0; i < window->list_count; ++i)
     {
         GooeyList *list = window->lists[i];
-
+        if (!list || !list->core.is_visible)
+            continue;
         if (mouse_x >= list->core.x && mouse_x <= list->core.x + list->core.width &&
             mouse_y >= list->core.y && mouse_y <= list->core.y + list->core.height)
         {

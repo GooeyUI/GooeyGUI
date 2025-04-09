@@ -20,7 +20,7 @@
 #include "theme/gooey_theme.h"
 #include "logger/pico_logger_internal.h"
 
-void GooeyButton_setText(GooeyButton *button, const char *text)
+void GooeyButton_SetText(GooeyButton *button, const char *text)
 {
     if (!button)
     {

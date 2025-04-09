@@ -2,11 +2,11 @@
 #include "backends/gooey_backend_internal.h"
 #include "logger/pico_logger_internal.h"
 
-GooeyImage* GooeyImage_Create(const char *image_path, int x, int y, int width, int height, void (*callback)(void))
+GooeyImage *GooeyImage_Create(const char *image_path, int x, int y, int width, int height, void (*callback)(void))
 {
-    GooeyImage *image = (GooeyImage *) malloc(sizeof(GooeyImage));
+    GooeyImage *image = (GooeyImage *)malloc(sizeof(GooeyImage));
 
-    if(!image)
+    if (!image)
     {
         LOG_ERROR("Couldn't allocate memory for image.");
         return NULL;
@@ -24,4 +24,15 @@ GooeyImage* GooeyImage_Create(const char *image_path, int x, int y, int width, i
     image->callback = callback;
 
     return image;
+}
+
+void GooeyImage_SetImage(GooeyImage *image, const char *image_path)
+{
+    if (!image)
+    {
+        LOG_ERROR("Image widget is NULL");
+        return;
+    }
+
+    image->texture_id = active_backend->LoadImage(image_path);
 }

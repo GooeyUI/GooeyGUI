@@ -45,6 +45,8 @@ bool GooeyRadioButtonGroup_HandleClick(GooeyWindow *win, int x, int y)
         for (int j = 0; j < group->button_count; ++j)
         {
             GooeyRadioButton *button = &group->buttons[j];
+            if (!button || !button->core.is_visible)
+                continue;
             int dx = x - (button->core.x + RADIO_BUTTON_RADIUS);
             int dy = y - (button->core.y + RADIO_BUTTON_RADIUS);
 

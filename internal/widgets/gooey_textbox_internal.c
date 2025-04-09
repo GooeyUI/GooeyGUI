@@ -16,7 +16,7 @@ void GooeyTextbox_Draw(GooeyWindow *win)
 
         active_backend->DrawRectangle(textbox->core.x, textbox->core.y,
                                       textbox->core.width, textbox->core.height,
-                                      textbox->focused ? win->active_theme->primary : win->active_theme->neutral,1.0f, win->creation_id);
+                                      textbox->focused ? win->active_theme->primary : win->active_theme->neutral, 1.0f, win->creation_id);
 
         int text_x = textbox->core.x + 5;
         int text_y = textbox->core.y + (textbox->core.height / 2) + 5;
@@ -137,6 +137,8 @@ bool GooeyTextbox_HandleClick(GooeyWindow *win, int x, int y)
     for (size_t i = 0; i < win->textboxes_count; i++)
     {
         GooeyTextbox *textbox = win->textboxes[i];
+        if (!textbox || !textbox->core.is_visible)
+            continue;
         if (x >= textbox->core.x &&
             x <= textbox->core.x + textbox->core.width &&
             y >= textbox->core.y &&

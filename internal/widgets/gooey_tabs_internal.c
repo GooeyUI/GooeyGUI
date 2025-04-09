@@ -31,7 +31,7 @@ void GooeyTabs_Draw(GooeyWindow *win)
     for (size_t i = 0; i < win->tab_count; ++i)
     {
         GooeyTabs *tabs = win->tabs[i];
-
+ 
         const int visible_area_y = tabs->core.y + TAB_HEIGHT;
         const int visible_area_x = tabs->core.x;
         const int visible_area_w = tabs->core.width;
@@ -42,7 +42,7 @@ void GooeyTabs_Draw(GooeyWindow *win)
             tabs->core.y,
             tabs->core.width,
             tabs->core.height,
-            win->active_theme->widget_base,1.0f,
+            win->active_theme->widget_base, 1.0f,
             win->creation_id);
 
         const size_t tab_count = tabs->tab_count;

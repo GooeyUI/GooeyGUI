@@ -64,6 +64,7 @@ bool GooeyButton_HandleClick(GooeyWindow *win, int x, int y)
     for (size_t i = 0; i < win->button_count; ++i)
     {
         GooeyButton *button = win->buttons[i];
+        if(!button || !button->core.is_visible) continue;
         bool is_within_bounds = (x >= button->core.x && x <= button->core.x + button->core.width) &&
                                 (y >= button->core.y && y <= button->core.y + button->core.height);
 
